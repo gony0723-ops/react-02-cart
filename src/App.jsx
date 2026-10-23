@@ -59,16 +59,9 @@ function App() {
                         const newCart = [...cart];
                         newCart[index].quantity -= 1;
                         setCart(newCart);
-                    }}-</button>
+                    }}>-</button>
                     {item.quantity}
                     <button onClick={() => {
-                        // cart의 정보 중, index 자리에 있는 요소의 quantity 값을 +1
-                        // cart[index].quantity += 1;   => 이렇게 쓰면 안됨/react가 바꾼걸 모름
-                        //                              => state의 값을 바꿀 땐 set으 쓰라고 했음
-
-                        // 1. react가 알아채게끔 하려면, 새 배열을 cart에 넣어야 됨 => 새 배열을 만들고
-                        // 2. 값을 바꾸고
-                        // 3. 그렇게 만들어진 배열을 setCart에 넣게 단계별로 진행하는게 이해하기 쉽고 편함
                         const newCart = [...cart];
                         newCart[index].quantity += 1;
                         setCart(newCart);
@@ -83,8 +76,9 @@ function App() {
             </tr>)
             </tbody>
         </table>
-        <h3>총 품목 : 몇개 / 총 수량: 몇개</h3>
-    </>;
+        <h3>총 품목 : {cart.length}개 / 총 수량: {cart.reduce((sum, item) => { return item.quantity + sum}, 0)}개</h3>
+    </>
+        );
 }
 
 export default App;

@@ -4,27 +4,43 @@ function App() {
     const [name, setName] = useState("");   // input 관리용
     const [cart, setCart] = useState([]);   // 목록 관리용
 
-    // cart는 목록입니다. 요소의 형태를 생각해보면,
-    // 이 요소는 이름을 가져야되고, 수량도 가져야 됨 =  => 여러개의 값을 가지는 타입은 객체
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (name === "" || name === "") {
+            return;
+        }
+        setCart([...cart, {name: name, quantity: 1}]);
+        setName("");
+    }
 
-    // cart = [
-    //           {name: "지우개", quantity: 4 },
-    //           {name: "연필", quantity: 2 },
-    //           {name: "공책", quantity: 9 },
+    const handleChange = (e) => {
+        setName(e.target.value);
+    }
 
-    return <>
+   const handleMinusButton = (item,index) => {
+       if (item.quantity <= 1) {
+           return;
+       }
+       const newCart = [...cart];
+       newCart[index].quantity -= 1;
+       setCart(newCart);
+   };
+
+    const handleUpdateQuantity = (index, number) => {
+    const newCart = [...cart];
+    const nextQuantity = newCart[index].quantit + number;
+    if (nextQuantity < 1) {
+        return;
+    }
+    newCart[index].quantity -= 1;
+
+}
+    return (
+      <>
         <h2>Simple Shop</h2>
         <fieldset>
             <legend>상품 추가</legend>
-            <form onSubmit={(event) => {
-                    event.preventDefault();
-                    if (name === "" || name === "") {
-                        return;
-                    }
-                    // name 값을 cart에다가 추가
-                    setCart([...cart, {name: name, quantity: 1}]);
-                    setName("");
-                }}>
+            <form onSubmit={handleSubmit}>
                 <input
                     placeholder={"상품명을 입력하세요"}
                     value={name}
@@ -52,20 +68,11 @@ function App() {
             {cart.map((item, index) => <tr key={index}>
                 <td>{item.name}</td>
                 <td>
-                    <button onClick={() => {
-                        if (item.quantity <= 1) {
-                            return;
-                        }
-                        const newCart = [...cart];
-                        newCart[index].quantity -= 1;
-                        setCart(newCart);
-                    }}>-</button>
+                    <button onClick={() => handleMinusButton(index, -10)}>-10</button>
+                    <button onClick={() => handleMinusButton(index, -1)}>-</button>
                     {item.quantity}
-                    <button onClick={() => {
-                        const newCart = [...cart];
-                        newCart[index].quantity += 1;
-                        setCart(newCart);
-                    }}>+</button>
+                    <button onClick={() => handleMinusButton(index, +1)}>+</button>
+                    <button onClick={() => handleMinusButton(index, +10)}>+10</button>
                 </td>
                 <td>
                     <button onClick={() => {

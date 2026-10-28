@@ -1,4 +1,5 @@
 import {useState} from "react";
+import style from "./App.module.css";
 
 function App() {
     const [name, setName] = useState("");   // input 관리용
@@ -36,28 +37,24 @@ function App() {
 
 }
     return (
-      <>
-        <h2>Simple Shop</h2>
-        <fieldset>
-            <legend>상품 추가</legend>
-            <form onSubmit={handleSubmit}>
+      <div className={styles.container}>
+        <h2 className={style.title}>Simple Shop</h2>
+        <fieldset className={style.fieldset}>
+            <legend className={style.legend}>상품 추가</legend>
+            <form className={style.form} onSubmit={handleSubmit}>
                 <input
                     placeholder={"상품명을 입력하세요"}
                     value={name}
-                    onChange={(e) => {setName(e.target.value);}}/>
-                <button type={"submit"}>카트에 담기</button>
+                    onChange={handleChange}
+                />
+                <button className={style.submitButton} type={"submit"}>
+                  카트에 담기
+                </button>
             </form>
         </fieldset>
-        <table border={1}
-               cellPadding={10}
-               style={{
-            // react에서 style 속성은 객체로 전달해줄 수 있으며,
-            // key: value 형태로 프로퍼티를 기록하는데
-            // key에는 camelCase로 작성해주어야 함
-            width: "100%",
-            borderCollapse: "collapse",
-        }}>
-            <thead style={{ backgroundColor: "#f2f2f2"}}>
+        <div className={styles.tableWrapper}>
+        <table  id={"table_id"} className={style.table}>
+            <thead>
             <tr>
                 <th>상품명</th>
                 <th>수량 제어</th>
@@ -65,25 +62,45 @@ function App() {
             </tr>
             </thead>
             <tbody>
-            {cart.map((item, index) => <tr key={index}>
-                <td>{item.name}</td>
-                <td>
-                    <button onClick={() => handleMinusButton(index, -10)}>-10</button>
-                    <button onClick={() => handleMinusButton(index, -1)}>-</button>
-                    {item.quantity}
-                    <button onClick={() => handleMinusButton(index, +1)}>+</button>
-                    <button onClick={() => handleMinusButton(index, +10)}>+10</button>
-                </td>
-                <td>
-                    <button onClick={() => {
-                        const result = cart.filter((v, i) => {
-                            return i !== index
-                    })}>삭제</button>
-                </td>
+              {cart.map((item, index) => (
+                <tr key={index}>
+                 <td>{item.name}</td>
+                 <td>
+                    <button
+                      className={styles.qtyButton}
+                      onClick={() => handleMinusButton(index, -10)}>
+                      -10
+                    </button>
+                    <button
+                      className={styles.qtyButton}
+                      onClick={() => handleMinusButton(index, -1)}>
+                      -
+                    </button>
+                   <span className={styles.quantityText}>{item.quantity}</span>
+                    <button
+                      className={styles.qtyButton}
+                      onClick={() => handleMinusButton(index, +1)}>
+                      +
+                    </button>
+                    <button
+                      className={styles.qtyButton}
+                      onClick={() => handleMinusButton(index, +10)}>
+                      +10
+                    </button>
+                 </td>
+                 <td>
+                    <button
+                      className={styles.deleteButton}
+                      onClick={() => handleDeleteButton(index)}>
+                      삭제
+                    </button>
+                 </td>
             </tr>)
-            </tbody>
+                </tbody>
         </table>
-        <h3>총 품목 : {cart.length}개 / 총 수량: {cart.reduce((sum, item) => { return item.quantity + sum}, 0)}개</h3>
+        <h3>총 품목 : {cart.length}개 / 총 수량: {cart.reduce((sum, item) => { return item.quantity + sum}, 0)}개
+        </h3>
+            </div>
     </>
         );
 }
